@@ -1,0 +1,13 @@
+.env
+*.sqlite
+*.db
+*.bak
+*.dt
+*.cf
+*.cfu
+*.epf
+*.erf
+uploads/
+exports/
+customer-configs/*/.env
+customer-configs/*/data/
