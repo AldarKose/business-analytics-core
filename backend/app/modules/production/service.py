@@ -136,3 +136,118 @@ def save_production_order(payload: ProductionOrderIn) -> dict:
 
     finally:
         conn.close()
+
+
+def save_operation_fact(payload):
+    conn = get_connection()
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO production_operations_fact (
+                        production_order_external_id,
+                        operation_external_id,
+                        operation_name,
+                        employee_external_id,
+                        employee_name,
+                        master_external_id,
+                        master_name,
+                        work_date,
+                        actual_hours,
+                        actual_amount,
+                        quantity,
+                        source_document_external_id,
+                        comment
+                    )
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    """,
+                    (
+                        payload.production_order_external_id,
+                        payload.operation_external_id,
+                        payload.operation_name,
+                        payload.employee_external_id,
+                        payload.employee_name,
+                        payload.master_external_id,
+                        payload.master_name,
+                        payload.work_date,
+                        payload.actual_hours,
+                        payload.actual_amount,
+                        payload.quantity,
+                        payload.source_document_external_id,
+                        payload.comment,
+                    ),
+                )
+        return {"status": "ok", "message": "Operation fact saved"}
+    finally:
+        conn.close()
+
+
+def save_material_fact(payload):
+    conn = get_connection()
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO production_materials_fact (
+                        production_order_external_id,
+                        material_external_id,
+                        material_name,
+                        actual_quantity,
+                        actual_price,
+                        actual_amount,
+                        source_document_external_id
+                    )
+                    VALUES (%s,%s,%s,%s,%s,%s,%s)
+                    """,
+                    (
+                        payload.production_order_external_id,
+                        payload.material_external_id,
+                        payload.material_name,
+                        payload.actual_quantity,
+                        payload.actual_price,
+                        payload.actual_amount,
+                        payload.source_document_external_id,
+                    ),
+                )
+        return {"status": "ok", "message": "Material fact saved"}
+    finally:
+        conn.close()
+
+
+def save_rework(payload):
+    conn = get_connection()
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO production_reworks (
+                        production_order_external_id,
+                        operation_name,
+                        employee_external_id,
+                        employee_name,
+                        rework_reason,
+                        rework_hours,
+                        rework_material_amount,
+                        rework_work_amount,
+                        source_document_external_id
+                    )
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    """,
+                    (
+                        payload.production_order_external_id,
+                        payload.operation_name,
+                        payload.employee_external_id,
+                        payload.employee_name,
+                        payload.rework_reason,
+                        payload.rework_hours,
+                        payload.rework_material_amount,
+                        payload.rework_work_amount,
+                        payload.source_document_external_id,
+                    ),
+                )
+        return {"status": "ok", "message": "Rework saved"}
+    finally:
+        conn.close()
