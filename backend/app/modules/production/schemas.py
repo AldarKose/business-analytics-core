@@ -33,3 +33,41 @@ class ProductionOrderIn(BaseModel):
     status: Optional[str] = None
     operations_plan: List[ProductionOperationPlanIn] = []
     materials_plan: List[ProductionMaterialPlanIn] = []
+
+
+class ProductionOperationFactIn(BaseModel):
+    production_order_external_id: str
+    operation_external_id: Optional[str] = None
+    operation_name: str
+    employee_external_id: Optional[str] = None
+    employee_name: Optional[str] = None
+    master_external_id: Optional[str] = None
+    master_name: Optional[str] = None
+    work_date: Optional[date] = None
+    actual_hours: Optional[float] = None
+    actual_amount: Optional[float] = None
+    quantity: Optional[float] = None
+    source_document_external_id: Optional[str] = None
+    comment: Optional[str] = None
+
+
+class ProductionMaterialFactIn(BaseModel):
+    production_order_external_id: str
+    material_external_id: Optional[str] = None
+    material_name: str
+    actual_quantity: Optional[float] = None
+    actual_price: Optional[float] = None
+    actual_amount: Optional[float] = None
+    source_document_external_id: Optional[str] = None
+
+
+class ProductionReworkIn(BaseModel):
+    production_order_external_id: str
+    operation_name: Optional[str] = None
+    employee_external_id: Optional[str] = None
+    employee_name: Optional[str] = None
+    rework_reason: Optional[str] = None
+    rework_hours: Optional[float] = None
+    rework_material_amount: Optional[float] = None
+    rework_work_amount: Optional[float] = None
+    source_document_external_id: Optional[str] = None
